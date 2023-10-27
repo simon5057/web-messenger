@@ -1,0 +1,33 @@
+{
+  "name": "web-messenger",
+  "version": "1.0.0",
+  "description": "Let postMessage on Iframe and Worker more convenient.",
+  "main": "index.ts",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simon5057/web-messenger.git"
+  },
+  "keywords": [
+    "postMessage",
+    "onMessage",
+    "Worker",
+    "iframe",
+    "Promise",
+    "async"
+  ],
+  "author": "simon5057",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/simon5057/web-messenger/issues"
+  },
+  "homepage": "https://github.com/simon5057/web-messenger#readme",
+  "dependencies": {
+    "jest": "^29.7.0",
+    "typescript": "^5.2.2"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
+  }
+}
