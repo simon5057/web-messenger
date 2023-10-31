@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Let postMessage on Iframe and Worker more convenient.",
   "main": "index.ts",
-  "scripts": {},
+  "scripts": {
+    "test": "jest"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/simon5057/web-messenger.git"
@@ -22,12 +24,14 @@
     "url": "https://github.com/simon5057/web-messenger/issues"
   },
   "homepage": "https://github.com/simon5057/web-messenger#readme",
-  "dependencies": {
-    "jest": "^29.7.0",
-    "typescript": "^5.2.2"
-  },
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node"
+  },
+  "devDependencies": {
+    "@jest/globals": "^29.7.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.2.2"
   }
 }
