@@ -1,6 +1,11 @@
-import { resolveResponseMessage } from "@/message/messagePools";
-import { SCENE_TYPE } from "@/message/types";
-import { postRequestToIframe, postResponseToIframe } from "./postMessage";
+import { resolveResponseMessage } from "../../../message/messagePools";
+import { SCENE_TYPE } from "../../../message/types";
+import {
+  clearIframe,
+  postRequestToIframe,
+  postResponseToIframe,
+  setIframe,
+} from "./postMessage";
 import iframeOnMessage from "../common/onMessage";
 
 export function registerMain<T extends Object>(
@@ -8,8 +13,12 @@ export function registerMain<T extends Object>(
   options?: {
     originWhiteList?: string[];
     postToOrigin?: string;
+    iframeDom?: HTMLIFrameElement;
   }
 ) {
+  if (options?.iframeDom) {
+    setIframe(options.iframeDom);
+  }
   const cleanup = iframeOnMessage({
     messageDispatcher,
     postResponse: (messageId: string, data: any) => {
@@ -26,7 +35,7 @@ export function registerMain<T extends Object>(
   });
 
   return {
-    postToParent<T>(callName: string, data: T) {
+    postToIframe<T>(callName: string, data: T) {
       return postRequestToIframe({
         callName,
         data,
@@ -34,14 +43,17 @@ export function registerMain<T extends Object>(
         awaitResponse: false,
       });
     },
-    postToParentAwaitResponse<T>(callName: string, data: T) {
+    postToIframeAwaitResponse<T>(callName: string, data: T) {
       return postRequestToIframe({
         callName,
         data,
         postToOrigin: options?.postToOrigin,
       });
     },
-    cleanup,
+    cleanup() {
+      cleanup();
+      clearIframe();
+    }
   };
 }
 

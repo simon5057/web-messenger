@@ -1,6 +1,6 @@
-import { saveMessageUnresolvedPool } from "@/message/messagePools";
-import { MESSAGE_DATA, MESSAGE_TYPE, SCENE_TYPE } from "@/message/types";
-import { useId } from "@/tools/id";
+import { saveMessageUnresolvedPool } from "../../../message/messagePools";
+import { MESSAGE_DATA, MESSAGE_TYPE, SCENE_TYPE } from "../../../message/types";
+import { useId } from "../../../tools/id";
 
 let iframe: HTMLIFrameElement | null = null;
 export function setIframe(iframeElement: HTMLIFrameElement) {
@@ -8,6 +8,9 @@ export function setIframe(iframeElement: HTMLIFrameElement) {
 }
 export function hasIframe() {
   return !!iframe;
+}
+export function clearIframe() {
+  iframe = null;
 }
 
 function postMessageToIframe<T>({

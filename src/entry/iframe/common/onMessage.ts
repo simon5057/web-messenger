@@ -1,5 +1,5 @@
-import { commonMessageHandler } from "@/message/onMessage";
-import { MESSAGE_DATA } from "@/message/types";
+import { commonMessageHandler } from "../../../message/onMessage";
+import { MESSAGE_DATA } from "../../../message/types";
 
 export default function iframeOnMessage<T extends Object>(options: {
   messageDispatcher: T;

@@ -1,4 +1,4 @@
-import { errorMessage } from "@/utils/log";
+import { errorMessage } from "../utils/log";
 import { MESSAGE_DATA, MESSAGE_TYPE } from "./types";
 
 export async function commonMessageHandler<T extends Object>({

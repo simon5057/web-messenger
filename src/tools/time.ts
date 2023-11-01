@@ -1,4 +1,4 @@
-import { getLogName } from "@/utils/log";
+import { getLogName } from "../utils/log";
 import { sleep } from "./async";
 
 async function timeAsyncAction<T>(pending: Promise<T>) {

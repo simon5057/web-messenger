@@ -1,7 +1,7 @@
-import { errorMessage } from "@/utils/log";
-import { MESSAGE_DATA, MESSAGE_TYPE, SCENE_TYPE } from "@/message/types";
-import { useId } from "@/tools/id";
-import { saveMessageUnresolvedPool } from "@/message/messagePools";
+import { errorMessage } from "../../../utils/log";
+import { MESSAGE_DATA, MESSAGE_TYPE, SCENE_TYPE } from "../../../message/types";
+import { useId } from "../../../tools/id";
+import { saveMessageUnresolvedPool } from "../../../message/messagePools";
 
 function postMessageToParent<T>({
   messageType,

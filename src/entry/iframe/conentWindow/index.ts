@@ -1,5 +1,5 @@
-import { resolveResponseMessage } from "@/message/messagePools";
-import { SCENE_TYPE } from "@/message/types";
+import { resolveResponseMessage } from "../../../message/messagePools";
+import { SCENE_TYPE } from "../../../message/types";
 import { postRequestToParent, postResponseToParent } from "./postMessage";
 import iframeOnMessage from "../common/onMessage";
 
