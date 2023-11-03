@@ -1,7 +1,7 @@
 import { describe, beforeEach, expect, it } from "@jest/globals";
-import { registerMain } from ".";
-import { MESSAGE_DATA, MESSAGE_TYPE } from "../../../message/types";
-import { PING, PONG } from "../../../utils/forTest";
+import { registerMain } from "..";
+import { MESSAGE_DATA, MESSAGE_TYPE } from "../../../../message/types";
+import { PING, PONG } from "../../../../utils/forTest";
 
 describe("Main postMessage", () => {
   let iframe: HTMLIFrameElement;
