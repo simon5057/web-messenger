@@ -3,7 +3,7 @@ import { SCENE_TYPE } from "../../../message/types";
 import { postRequestToParent, postResponseToParent } from "./postMessage";
 import iframeOnMessage from "../common/onMessage";
 
-export default function registerIframe<T extends Object>(
+export function registerIframe<T extends Object>(
   messageDispatcher: T,
   options?: {
     originWhiteList?: string[];

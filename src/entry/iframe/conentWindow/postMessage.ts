@@ -3,6 +3,11 @@ import { MESSAGE_DATA, MESSAGE_TYPE, SCENE_TYPE } from "../../../message/types";
 import { useId } from "../../../tools/id";
 import { saveMessageUnresolvedPool } from "../../../message/messagePools";
 
+let win: Window = window;
+export function _setWinForTest(mockWin: Window) {
+  win = mockWin;
+}
+
 function postMessageToParent<T>({
   messageType,
   messageId,
@@ -16,7 +21,7 @@ function postMessageToParent<T>({
   callName?: string;
   postToOrigin?: string;
 }): void {
-  if (window.parent === window) {
+  if (win.parent === win) {
     throw errorMessage("not in iframe");
   }
   const messages: MESSAGE_DATA = {
@@ -25,7 +30,7 @@ function postMessageToParent<T>({
     messageId,
     data,
   };
-  window.parent.postMessage(messages, postToOrigin || "*");
+  win.parent.postMessage(messages, postToOrigin || "*");
 }
 
 export async function postRequestToParent<T>({

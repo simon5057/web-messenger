@@ -1,0 +1,63 @@
+import { describe, beforeEach, expect, it } from "@jest/globals";
+import { registerIframe } from "..";
+import { MESSAGE_DATA, MESSAGE_TYPE } from "../../../../message/types";
+import { JEST_MOCK_ID, PING, PONG } from "../../../../utils/forTest";
+import { createMockWindow } from "./index.mock";
+import { _setWinForTest } from "../postMessage";
+import { postMessageMock } from "../../../../mock/postMessage.mock";
+
+describe("Iframe postMessage", () => {
+  let mockWindow;
+  let messageBridge: ReturnType<typeof registerIframe>;
+  let ping;
+
+  beforeEach(() => {
+    mockWindow = createMockWindow();
+    _setWinForTest(mockWindow);
+    messageBridge = registerIframe({
+      ping(data) {
+        ping = data;
+        return PONG;
+      },
+    });
+  });
+
+  it("MessageDispatcher: ping pong", () => {
+    const data = PING;
+    const msg: MESSAGE_DATA = {
+      messageType: MESSAGE_TYPE.REQUEST,
+      callName: "ping",
+      messageId: "1",
+      data,
+    };
+    postMessageMock(msg);
+    return new Promise<void>((resolve) => {
+      setTimeout(() => {
+        const res: MESSAGE_DATA = {
+          messageType: MESSAGE_TYPE.RESPONSE,
+          messageId: msg.messageId,
+          data: PONG,
+        };
+
+        expect(ping).toEqual(data);
+        expect(mockWindow.parent.postMessage).toBeCalledWith(res, "*");
+        resolve();
+      }, 100);
+    });
+  });
+
+  it("Post To Parent", () => {
+    const callName = "postParent";
+
+    messageBridge.postToParent(callName, PING);
+    const callData: MESSAGE_DATA = {
+      messageType: MESSAGE_TYPE.REQUEST,
+      messageId: JEST_MOCK_ID,
+      callName,
+      data: PING,
+    };
+    expect(mockWindow.parent.postMessage).toBeCalledWith(callData, "*");
+  });
+
+  it("Post To Parent: Await Response", () => {});
+});
