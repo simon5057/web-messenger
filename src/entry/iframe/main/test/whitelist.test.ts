@@ -2,7 +2,7 @@ import { describe, expect, it } from "@jest/globals";
 import { registerMain } from "..";
 import { MESSAGE_DATA, MESSAGE_TYPE } from "../../../../message/types";
 import { PING } from "../../../../utils/forTest";
-import { postMessageMock } from "./index.mock";
+import { postMessageMock } from "../../../../mock/postMessage.mock";
 
 describe("Main postMessage Restrictions 1", () => {
   it("Origin: White List", () => {
