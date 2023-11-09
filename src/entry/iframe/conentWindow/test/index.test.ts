@@ -59,5 +59,28 @@ describe("Iframe postMessage", () => {
     expect(mockWindow.parent.postMessage).toBeCalledWith(callData, "*");
   });
 
-  it("Post To Parent: Await Response", () => {});
+  it("Post To Parent: Await Response", () => {
+    const callName = "postParent_1";
+
+    return new Promise<void>((resolve) => {
+      messageBridge.postToParentAwaitResponse(callName, PING).then((res) => {
+        expect(res).toEqual(PONG);
+        resolve();
+      });
+      const callData: MESSAGE_DATA = {
+        messageType: MESSAGE_TYPE.REQUEST,
+        messageId: JEST_MOCK_ID,
+        callName,
+        data: PING,
+      };
+      expect(mockWindow.parent.postMessage).toBeCalledWith(callData, "*");
+
+      const response: MESSAGE_DATA = {
+        messageType: MESSAGE_TYPE.RESPONSE,
+        messageId: JEST_MOCK_ID,
+        data: PONG,
+      };
+      postMessageMock(response, "*");
+    });
+  });
 });
