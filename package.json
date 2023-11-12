@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "Let postMessage on Iframe and Worker more convenient.",
   "main": "index.ts",
-  "type": "module",
   "scripts": {
     "test": "jest",
+    "test-coverage": "jest --collectCoverage",
     "build": "rollup --config"
   },
   "repository": {

@@ -1,6 +1,6 @@
-import tsPlugin from "@rollup/plugin-typescript";
+const tsPlugin = require("@rollup/plugin-typescript");
 
-export default {
+module.exports = {
   input: {
     iframeMain: "src/entry/iframe/main/index.ts",
     iframeContentWindow: "src/entry/iframe/contentWindow/index.ts",
