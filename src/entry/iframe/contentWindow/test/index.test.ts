@@ -1,7 +1,7 @@
 import { describe, beforeEach, expect, it } from "@jest/globals";
 import { registerIframe } from "..";
 import { MESSAGE_DATA, MESSAGE_TYPE } from "../../../../message/types";
-import { JEST_MOCK_ID, PING, PONG } from "../../../../utils/forTest";
+import { PING, PONG } from "../../../../utils/forTest";
 import { createMockWindow } from "./index.mock";
 import { _setWinForTest } from "../postMessage";
 import { postMessageMock } from "../../../../mock/postMessage.mock";
@@ -48,11 +48,12 @@ describe("Iframe postMessage", () => {
 
   it("Post To Parent", () => {
     const callName = "postParent";
-
     messageBridge.postToParent(callName, PING);
+
+    const calls = mockWindow.parent.postMessage.mock.calls[0];
     const callData: MESSAGE_DATA = {
       messageType: MESSAGE_TYPE.REQUEST,
-      messageId: JEST_MOCK_ID,
+      messageId: calls[0].messageId,
       callName,
       data: PING,
     };
@@ -67,9 +68,10 @@ describe("Iframe postMessage", () => {
         expect(res).toEqual(PONG);
         resolve();
       });
+      const calls = mockWindow.parent.postMessage.mock.calls[0];
       const callData: MESSAGE_DATA = {
         messageType: MESSAGE_TYPE.REQUEST,
-        messageId: JEST_MOCK_ID,
+        messageId: calls[0].messageId,
         callName,
         data: PING,
       };
@@ -77,10 +79,12 @@ describe("Iframe postMessage", () => {
 
       const response: MESSAGE_DATA = {
         messageType: MESSAGE_TYPE.RESPONSE,
-        messageId: JEST_MOCK_ID,
+        messageId: callData.messageId,
         data: PONG,
       };
-      postMessageMock(response, "*");
+      setTimeout(() => {
+        postMessageMock(response, "*");
+      });
     });
   });
 });

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "@jest/globals";
 import { registerIframe } from "..";
-import { JEST_MOCK_ID, PING } from "../../../../utils/forTest";
+import { PING } from "../../../../utils/forTest";
 import { createMockWindow } from "./index.mock";
 import { _setWinForTest } from "../postMessage";
 import { MESSAGE_DATA, MESSAGE_TYPE } from "../../../../message/types";
@@ -20,16 +20,18 @@ describe("Iframe postMessage Restrictions 2", () => {
     const data = PING;
     return new Promise<void>((resolve) => {
       messageBridge.postToParent(callName, data);
+
       setTimeout(() => {
+        const calls = mockWindow.parent.postMessage.mock.calls[0][0];
         const callData: MESSAGE_DATA = {
           messageType: MESSAGE_TYPE.REQUEST,
-          messageId: JEST_MOCK_ID,
+          messageId: calls.messageId,
           data,
           callName,
         };
         expect(mockWindow.parent.postMessage).toBeCalledWith(callData, origin);
         resolve();
-      }, 100);
+      });
     });
   });
 });
