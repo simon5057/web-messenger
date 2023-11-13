@@ -20,6 +20,7 @@ describe("Iframe postMessage Restrictions 2", () => {
     const data = PING;
     return new Promise<void>((resolve) => {
       messageBridge.postToParent(callName, data);
+      messageBridge.postToParentAwaitResponse(callName, data);
 
       setTimeout(() => {
         const calls = mockWindow.parent.postMessage.mock.calls[0][0];
@@ -30,6 +31,7 @@ describe("Iframe postMessage Restrictions 2", () => {
           callName,
         };
         expect(mockWindow.parent.postMessage).toBeCalledWith(callData, origin);
+        expect(mockWindow.parent.postMessage).toBeCalledTimes(2);
         resolve();
       });
     });
