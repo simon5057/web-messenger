@@ -8,7 +8,7 @@ export function commonLogName() {
 }
 
 export function genCommonLogMessage(message: string) {
-  return `${commonLogName} ${message}`;
+  return `${commonLogName()} ${message}`;
 }
 
 export function errorMessage(message: string) {
