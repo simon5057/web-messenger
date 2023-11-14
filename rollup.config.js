@@ -1,13 +1,35 @@
 const tsPlugin = require("@rollup/plugin-typescript");
 
-module.exports = {
-  input: {
-    iframeMain: "src/entry/iframe/main/index.ts",
-    iframeContentWindow: "src/entry/iframe/contentWindow/index.ts",
+module.exports = [
+  {
+    input: {
+      iframeMain: "src/entry/iframe/main/index.ts",
+      iframeContentWindow: "src/entry/iframe/contentWindow/index.ts",
+    },
+    output: {
+      dir: "dist",
+      sourcemap: true,
+    },
+    plugins: [tsPlugin()],
   },
-  output: {
-    dir: "dist",
-    sourcemap: true,
+  {
+    input: "src/entry/iframe/main/index.ts",
+    output: {
+      name: "iframeMain",
+      sourcemap: true,
+      format: "iife",
+      file: "dist/webMessenger-iframeMain.iife.js",
+    },
+    plugins: [tsPlugin()],
   },
-  plugins: [tsPlugin()],
-};
+  {
+    input: "src/entry/iframe/contentWindow/index.ts",
+    output: {
+      name: "iframeContentWindow",
+      sourcemap: true,
+      format: "iife",
+      file: "dist/webMessenger-iframeContentWindow.iife.js",
+    },
+    plugins: [tsPlugin()],
+  },
+];
