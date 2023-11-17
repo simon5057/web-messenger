@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>[Web-messenger] iframe contentWindow document</title>
+    <script src="../../dist/webMessenger-iframeContentWindow.iife.js"></script>
+  </head>
+  <body>
+    <button id="button">Post to parent</button>
+
+    <script>
+      const webMessenger = WebMessengerContentWindow.registerIframe({
+        ping(data) {
+          console.log(
+            "[messageDispatcher] post from parent, method ping: ",
+            data
+          );
+          return "pong";
+        },
+      });
+      webMessenger.postToParent("onReady", "onReady");
+
+      const button = document.querySelector("#button");
+      button.addEventListener("click", () => {
+        webMessenger
+          .postToIframeAwaitResponse("parentMethod", "parameters")
+          .then((data) => {
+            console.log(
+              `[response] post to parent, method "parentMethod": `,
+              data
+            );
+          });
+      });
+    </script>
+  </body>
+</html>

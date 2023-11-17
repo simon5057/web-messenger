@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>[Web-messenger] iframe main document</title>
+    <script src="../../dist/webMessenger-iframeMain.iife.js"></script>
+  </head>
+  <body>
+    <iframe id="iframe" src="./iframe.html" frameborder="0"></iframe>
+    <button id="button">Post to iframe</button>
+
+    <script>
+      const iframe = document.querySelector("#iframe");
+      let isReady = false;
+      const webMessenger = WebMessenger.registerMain(
+        {
+          onReady(data) {
+            isReady = true;
+            console.log(
+              `[messageDispatcher] post from iframe, method "onReady": `,
+              data
+            );
+          },
+          parentMethod(params) {
+            console.log(
+              `[messageDispatcher] post from iframe, method "parentMethod": `,
+              params
+            );
+            return "result";
+          },
+        },
+        {
+          iframeDom: iframe,
+        }
+      );
+
+      const button = document.querySelector("#button");
+      button.addEventListener("click", () => {
+        if (!isReady) {
+          console.log("Not ready yet!");
+          return;
+        }
+        webMessenger.postToIframeAwaitResponse("ping", "ping").then((data) => {
+          console.log("[response] post to iframe, method ping: ", data);
+        });
+      });
+    </script>
+  </body>
+</html>
