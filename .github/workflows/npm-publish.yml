@@ -12,6 +12,7 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 16
+          registry-url: https://registry.npmjs.org/
       - name: Get commit message
         run: |
           COMMIT_MESSAGE=$(git log --format=%B -n 1)
@@ -24,15 +25,6 @@ jobs:
       - run: npm run test
       - run: npm run build
 
-  publish-npm:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          registry-url: https://registry.npmjs.org/
       - run: npm i
       - run: npm publish
         env:
