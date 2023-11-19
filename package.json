@@ -26,6 +26,9 @@
     "url": "https://github.com/simon5057/web-messenger/issues"
   },
   "homepage": "https://github.com/simon5057/web-messenger#readme",
+  "files": [
+    "dist/"
+  ],
   "devDependencies": {
     "@jest/globals": "^29.7.0",
     "@rollup/plugin-typescript": "^11.1.5",
