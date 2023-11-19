@@ -1,0 +1,22 @@
+name: Test
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: pnpm/action-setup@v2.4.0
+        with:
+          version: next-8
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: pnpm
+
+      - run: pnpm i
+      - run: pnpm run build
+      - run: pnpm run test
