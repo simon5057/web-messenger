@@ -15,7 +15,7 @@ module.exports = [
   {
     input: "src/entry/iframe/main/index.ts",
     output: {
-      name: "iframeMain",
+      name: "WebMessengerMain",
       sourcemap: true,
       format: "iife",
       file: "dist/webMessenger-iframeMain.iife.js",
@@ -25,7 +25,7 @@ module.exports = [
   {
     input: "src/entry/iframe/contentWindow/index.ts",
     output: {
-      name: "iframeContentWindow",
+      name: "WebMessengerContentWindow",
       sourcemap: true,
       format: "iife",
       file: "dist/webMessenger-iframeContentWindow.iife.js",
