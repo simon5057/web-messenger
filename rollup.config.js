@@ -1,6 +1,9 @@
 const terser = require("@rollup/plugin-terser");
 const tsPlugin = require("@rollup/plugin-typescript");
 
+const IS_PROD = process.env.ENV === "prod";
+const dist = IS_PROD ? "." : "dist";
+
 module.exports = [
   {
     input: {
@@ -8,7 +11,7 @@ module.exports = [
       iframeContentWindow: "src/entry/iframe/contentWindow/index.ts",
     },
     output: {
-      dir: "dist",
+      dir: dist,
       sourcemap: true,
     },
     plugins: [tsPlugin()],
@@ -19,7 +22,7 @@ module.exports = [
       name: "WebMessengerMain",
       sourcemap: true,
       format: "iife",
-      file: "dist/webMessenger-iframeMain.iife.js",
+      file: `${dist}/webMessenger-iframeMain.iife.js`,
     },
     plugins: [tsPlugin()],
   },
@@ -29,7 +32,7 @@ module.exports = [
       name: "WebMessengerContentWindow",
       sourcemap: true,
       format: "iife",
-      file: "dist/webMessenger-iframeContentWindow.iife.js",
+      file: `${dist}/webMessenger-iframeContentWindow.iife.js`,
     },
     plugins: [tsPlugin()],
   },
@@ -40,7 +43,7 @@ module.exports = [
       sourcemap: true,
       compact: true,
       format: "iife",
-      file: "dist/webMessenger-iframeMain.iife.min.js",
+      file: `${dist}/webMessenger-iframeMain.iife.min.js`,
     },
     plugins: [tsPlugin(), terser()],
   },
@@ -51,7 +54,7 @@ module.exports = [
       sourcemap: true,
       compact: true,
       format: "iife",
-      file: "dist/webMessenger-iframeContentWindow.iife.min.js",
+      file: `${dist}/webMessenger-iframeContentWindow.iife.min.js`,
     },
     plugins: [tsPlugin(), terser()],
   },
