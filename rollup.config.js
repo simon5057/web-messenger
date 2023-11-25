@@ -1,3 +1,4 @@
+const terser = require("@rollup/plugin-terser");
 const tsPlugin = require("@rollup/plugin-typescript");
 
 module.exports = [
@@ -31,5 +32,27 @@ module.exports = [
       file: "dist/webMessenger-iframeContentWindow.iife.js",
     },
     plugins: [tsPlugin()],
+  },
+  {
+    input: "src/entry/iframe/main/index.ts",
+    output: {
+      name: "WebMessengerMain",
+      sourcemap: true,
+      compact: true,
+      format: "iife",
+      file: "dist/webMessenger-iframeMain.iife.min.js",
+    },
+    plugins: [tsPlugin(), terser()],
+  },
+  {
+    input: "src/entry/iframe/contentWindow/index.ts",
+    output: {
+      name: "WebMessengerContentWindow",
+      sourcemap: true,
+      compact: true,
+      format: "iife",
+      file: "dist/webMessenger-iframeContentWindow.iife.min.js",
+    },
+    plugins: [tsPlugin(), terser()],
   },
 ];
