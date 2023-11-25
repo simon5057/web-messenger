@@ -1,15 +1,11 @@
 const terser = require("@rollup/plugin-terser");
 const tsPlugin = require("@rollup/plugin-typescript");
 
-const IS_PROD = process.env.ENV === "prod";
-const dist = IS_PROD ? "." : "dist";
+const dist = "dist";
 
 module.exports = [
   {
-    input: {
-      iframeMain: "src/entry/iframe/main/index.ts",
-      iframeContentWindow: "src/entry/iframe/contentWindow/index.ts",
-    },
+    input: "src/index.ts",
     output: {
       dir: dist,
       sourcemap: true,
@@ -21,8 +17,8 @@ module.exports = [
     output: {
       name: "WebMessengerMain",
       sourcemap: true,
-      format: "iife",
-      file: `${dist}/webMessenger-iframeMain.iife.js`,
+      format: "umd",
+      file: `${dist}/webMessenger-iframeMain.umd.js`,
     },
     plugins: [tsPlugin()],
   },
@@ -31,8 +27,8 @@ module.exports = [
     output: {
       name: "WebMessengerContentWindow",
       sourcemap: true,
-      format: "iife",
-      file: `${dist}/webMessenger-iframeContentWindow.iife.js`,
+      format: "umd",
+      file: `${dist}/webMessenger-iframeContentWindow.umd.js`,
     },
     plugins: [tsPlugin()],
   },
@@ -42,8 +38,8 @@ module.exports = [
       name: "WebMessengerMain",
       sourcemap: true,
       compact: true,
-      format: "iife",
-      file: `${dist}/webMessenger-iframeMain.iife.min.js`,
+      format: "umd",
+      file: `${dist}/webMessenger-iframeMain.umd.min.js`,
     },
     plugins: [tsPlugin(), terser()],
   },
@@ -53,8 +49,8 @@ module.exports = [
       name: "WebMessengerContentWindow",
       sourcemap: true,
       compact: true,
-      format: "iife",
-      file: `${dist}/webMessenger-iframeContentWindow.iife.min.js`,
+      format: "umd",
+      file: `${dist}/webMessenger-iframeContentWindow.umd.min.js`,
     },
     plugins: [tsPlugin(), terser()],
   },

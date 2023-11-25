@@ -1,25 +1,16 @@
 {
   "name": "web-messenger",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Let postMessage on Iframe and Worker more convenient.",
+  "main": "./dist/index.js",
   "scripts": {
     "test": "jest",
     "test-coverage": "jest --collectCoverage",
-    "build": "rollup --config rollup.config.js --environment ENV:prod",
-    "build-local": "rollup --config",
-    "publish-files": "node scripts/publish-files.js"
+    "build": "rollup --config"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/simon5057/web-messenger.git"
-  },
-  "browser": {
-    "./iframeMain": "./dist/iframeMain.js",
-    "./iframeContentWindow": "./dist/iframeContentWindow.js"
-  },
-  "exports": {
-    "./iframeMain": "./dist/iframeMain.js",
-    "./iframeContentWindow": "./dist/iframeContentWindow.js"
   },
   "keywords": [
     "postMessage",
@@ -36,9 +27,7 @@
   },
   "homepage": "https://github.com/simon5057/web-messenger#readme",
   "files": [
-    "dist/",
-    "*.js",
-    "*.min.js.map"
+    "dist/"
   ],
   "devDependencies": {
     "@jest/globals": "^29.7.0",
