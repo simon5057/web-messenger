@@ -4,13 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>[Web-messenger] iframe contentWindow document</title>
-    <script src="../../dist/webMessenger-iframeContentWindow.iife.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web-messenger/dist/webMessenger-iframeMain.umd.min.js"></script>
   </head>
   <body>
     <button id="button">Post to parent</button>
 
     <script>
-      const webMessenger = WebMessengerContentWindow.registerIframe({
+      const webMessenger = WebMessengerIframeContentWindow.registerIframe({
         ping(data) {
           console.log(
             "[messageDispatcher] post from parent, method ping: ",

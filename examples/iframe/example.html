@@ -4,16 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>[Web-messenger] iframe main document</title>
-    <script src="../../dist/webMessenger-iframeMain.iife.js"></script>
+    <style>
+      #iframe {
+        width: 400px;
+        height: 300px;
+        border: 1px solid #ccc;
+      }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/web-messenger/dist/webMessenger-iframeMain.umd.min.js"></script>
   </head>
   <body>
     <iframe id="iframe" src="./iframe.html" frameborder="0"></iframe>
+    <hr />
     <button id="button">Post to iframe</button>
+    <p>Press F12 to open devtools</p>
 
     <script>
       const iframe = document.querySelector("#iframe");
       let isReady = false;
-      const webMessenger = WebMessenger.registerMain(
+      const webMessenger = WebMessengerIframeMain.registerMain(
         {
           onReady(data) {
             isReady = true;
