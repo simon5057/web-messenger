@@ -32,7 +32,7 @@ or
 
 ```ts
 // main window
-import { registerMain } from "web-messenger/iframeMain";
+import { WebMessengerIframeMain } from "web-messenger";
 
 const messageDispatcher = {
   onReady(data) {
@@ -59,7 +59,10 @@ const options: {
   iframeDOM: iframe,
 };
 
-const webMessenger = registerMain(messageDispatcher, options);
+const webMessenger = WebMessengerIframeMain.registerMain(
+  messageDispatcher,
+  options
+);
 ```
 
 Post Message to Iframe
@@ -93,7 +96,7 @@ export declare function registerMain<T extends Object>(
 
 ```ts
 // iframe window
-import { registerIframe } from "web-messenger/iframeContentWindow";
+import { WebMessengerIframeContentWindow } from "web-messenger";
 
 const messageDispatcher = {
   ping(data) {
@@ -107,7 +110,10 @@ const options: {
   postToOrigin?: string;
 } = {};
 
-const webMessenger = registerIframe(messageDispatcher, options);
+const webMessenger = WebMessengerIframeContentWindow.registerIframe(
+  messageDispatcher,
+  options
+);
 ```
 
 Post Message to Parent
