@@ -1,6 +1,6 @@
 {
   "name": "web-messenger",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Let postMessage on Iframe and Worker more convenient.",
   "main": "./dist/index.js",
   "scripts": {
