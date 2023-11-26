@@ -15,7 +15,7 @@ module.exports = [
   {
     input: "src/entry/iframe/main/index.ts",
     output: {
-      name: "WebMessengerMain",
+      name: "WebMessengerIframeMain",
       sourcemap: true,
       format: "umd",
       file: `${dist}/webMessenger-iframeMain.umd.js`,
@@ -25,7 +25,7 @@ module.exports = [
   {
     input: "src/entry/iframe/contentWindow/index.ts",
     output: {
-      name: "WebMessengerContentWindow",
+      name: "WebMessengerIframeContentWindow",
       sourcemap: true,
       format: "umd",
       file: `${dist}/webMessenger-iframeContentWindow.umd.js`,
@@ -35,7 +35,7 @@ module.exports = [
   {
     input: "src/entry/iframe/main/index.ts",
     output: {
-      name: "WebMessengerMain",
+      name: "WebMessengerIframeMain",
       sourcemap: true,
       compact: true,
       format: "umd",
@@ -46,7 +46,7 @@ module.exports = [
   {
     input: "src/entry/iframe/contentWindow/index.ts",
     output: {
-      name: "WebMessengerContentWindow",
+      name: "WebMessengerIframeContentWindow",
       sourcemap: true,
       compact: true,
       format: "umd",

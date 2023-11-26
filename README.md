@@ -28,6 +28,8 @@ or
 
 ### Used for iframe
 
+#### ESModule
+
 - Main Window
 
 ```ts
@@ -140,6 +142,32 @@ export declare function registerIframe<T extends Object>(
   postToParentAwaitResponse<T_2>(callName: string, data: T_2): Promise<unknown>;
   cleanup: () => void;
 };
+```
+
+#### Browser
+
+- Main Window
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/web-messenger/dist/webMessenger-iframeMain.umd.min.js"></script>
+<script>
+  const webMessenger = WebMessengerIframeMain.registerMain(
+    messageDispatcher,
+    options
+  );
+</script>
+```
+
+- Iframe window
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/web-messenger/dist/webMessenger-iframeContentWindow.umd.js"></script>
+<script>
+  const webMessenger = WebMessengerIframeContentWindow.registerIframe(
+    messageDispatcher,
+    options
+  );
+</script>
 ```
 
 ### Used for Worker
