@@ -11,7 +11,7 @@
         border: 1px solid #ccc;
       }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/web-messenger/dist/webMessenger-iframeMain.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web-messenger/dist/webMessenger-iframeMain.umd.js"></script>
   </head>
   <body>
     <iframe id="iframe" src="./iframe.html" frameborder="0"></iframe>
@@ -20,19 +20,27 @@
     <p>Press F12 to open devtools</p>
 
     <script>
+      function log(...data) {
+        console.log(
+          "%c[main]" + data.join(""),
+          "background: #222; color: #bada55"
+        );
+      }
+    </script>
+    <script>
       const iframe = document.querySelector("#iframe");
       let isReady = false;
       const webMessenger = WebMessengerIframeMain.registerMain(
         {
           onReady(data) {
             isReady = true;
-            console.log(
+            log(
               `[messageDispatcher] post from iframe, method "onReady": `,
               data
             );
           },
           parentMethod(params) {
-            console.log(
+            log(
               `[messageDispatcher] post from iframe, method "parentMethod": `,
               params
             );
@@ -47,11 +55,11 @@
       const button = document.querySelector("#button");
       button.addEventListener("click", () => {
         if (!isReady) {
-          console.log("Not ready yet!");
+          log("Not ready yet!");
           return;
         }
         webMessenger.postToIframeAwaitResponse("ping", "ping").then((data) => {
-          console.log("[response] post to iframe, method ping: ", data);
+          log("[response] post to iframe, method ping: ", data);
         });
       });
     </script>
