@@ -3,6 +3,24 @@ const tsPlugin = require("@rollup/plugin-typescript");
 
 const dist = "dist";
 
+function genUMDOutputConfig(input, outputName, fileName, compact) {
+  const config = {
+    input,
+    output: {
+      name: outputName,
+      sourcemap: true,
+      format: "umd",
+      file: `${dist}/${fileName}.umd${compact ? ".min" : ""}.js`,
+    },
+    plugins: [tsPlugin()],
+  };
+  if (compact) {
+    config.output.compact = true;
+    config.plugins.push(terser());
+  }
+  return config;
+}
+
 module.exports = [
   {
     input: "src/index.ts",
@@ -12,46 +30,26 @@ module.exports = [
     },
     plugins: [tsPlugin()],
   },
-  {
-    input: "src/entry/iframe/main/index.ts",
-    output: {
-      name: "WebMessengerIframeMain",
-      sourcemap: true,
-      format: "umd",
-      file: `${dist}/webMessenger-iframeMain.umd.js`,
-    },
-    plugins: [tsPlugin()],
-  },
-  {
-    input: "src/entry/iframe/contentWindow/index.ts",
-    output: {
-      name: "WebMessengerIframeContentWindow",
-      sourcemap: true,
-      format: "umd",
-      file: `${dist}/webMessenger-iframeContentWindow.umd.js`,
-    },
-    plugins: [tsPlugin()],
-  },
-  {
-    input: "src/entry/iframe/main/index.ts",
-    output: {
-      name: "WebMessengerIframeMain",
-      sourcemap: true,
-      compact: true,
-      format: "umd",
-      file: `${dist}/webMessenger-iframeMain.umd.min.js`,
-    },
-    plugins: [tsPlugin(), terser()],
-  },
-  {
-    input: "src/entry/iframe/contentWindow/index.ts",
-    output: {
-      name: "WebMessengerIframeContentWindow",
-      sourcemap: true,
-      compact: true,
-      format: "umd",
-      file: `${dist}/webMessenger-iframeContentWindow.umd.min.js`,
-    },
-    plugins: [tsPlugin(), terser()],
-  },
+  genUMDOutputConfig(
+    "src/entry/iframe/main/index.ts",
+    "WebMessengerIframeMain",
+    "webMessenger-iframeMain"
+  ),
+  genUMDOutputConfig(
+    "src/entry/iframe/contentWindow/index.ts",
+    "WebMessengerIframeContentWindow",
+    "webMessenger-iframeContentWindow"
+  ),
+  genUMDOutputConfig(
+    "src/entry/iframe/main/index.ts",
+    "WebMessengerIframeMain",
+    "webMessenger-iframeMain",
+    true
+  ),
+  genUMDOutputConfig(
+    "src/entry/iframe/contentWindow/index.ts",
+    "WebMessengerIframeContentWindow",
+    "webMessenger-iframeContentWindow",
+    true
+  ),
 ];
