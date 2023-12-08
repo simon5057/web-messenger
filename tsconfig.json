@@ -12,8 +12,8 @@
     "declaration": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "lib": ["DOM", "ESNext"],
-    "esModuleInterop": true,
+    "lib": ["DOM", "ESNext", "WebWorker"],
+    "esModuleInterop": true
   },
   "include": ["src"],
   "exclude": ["node_modules"]
