@@ -1,21 +1,29 @@
 import { resolveResponseMessage } from "../../../message/messagePools";
-import { SCENE_TYPE } from "../../../message/types";
+import { MESSAGE_DATA, SCENE_TYPE } from "../../../message/types";
 import { postRequestToMain, postResponseToMain } from "./postMessage";
-import workerOnMessage from "../common/onMessage";
+import { commonMessageHandler } from "../../../message/onMessage";
 
 export function registerWorker<T extends Object>(messageDispatcher: T) {
-  const cleanup = workerOnMessage({
-    messageDispatcher,
-    postResponse: (messageId: string, data: any) => {
-      postResponseToMain({
-        messageId,
-        data,
-      });
-    },
-    receiveResponse: (messageId: string, data: any) => {
-      resolveResponseMessage(SCENE_TYPE.WORKER, { messageId, data });
-    },
-  });
+  async function messageHandler(event: MessageEvent<MESSAGE_DATA>) {
+    commonMessageHandler({
+      messageDispatcher,
+      event,
+      postResponse: (messageId: string, data: any) => {
+        postResponseToMain({
+          messageId,
+          data,
+        });
+      },
+      receiveResponse: (messageId: string, data: any) => {
+        resolveResponseMessage(SCENE_TYPE.WORKER, { messageId, data });
+      },
+    });
+  }
+
+  self.addEventListener("message", messageHandler, false);
+  const cleanup = () => {
+    self.removeEventListener("message", messageHandler, false);
+  };
 
   return {
     postToMain<T>(callName: string, data: T) {

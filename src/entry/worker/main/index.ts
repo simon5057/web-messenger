@@ -1,34 +1,45 @@
 import { resolveResponseMessage } from "../../../message/messagePools";
-import { SCENE_TYPE } from "../../../message/types";
+import { MESSAGE_DATA, SCENE_TYPE } from "../../../message/types";
 import {
   clearWorker,
   postRequestToWorker,
   postResponseToWorker,
   setWorker,
 } from "./postMessage";
-import workerOnMessage from "../common/onMessage";
+import { errorMessage } from "../../../utils/log";
+import { commonMessageHandler } from "../../../message/onMessage";
 
 export function registerMain<T extends Object>(
   messageDispatcher: T,
-  options?: {
-    worker?: Worker;
+  options: {
+    worker: Worker;
   }
 ) {
-  if (options?.worker) {
-    setWorker(options.worker);
+  if (!options.worker) {
+    throw errorMessage("options.worker is required");
   }
-  const cleanup = workerOnMessage({
-    messageDispatcher,
-    postResponse: (messageId: string, data: any) => {
-      postResponseToWorker({
-        messageId,
-        data,
-      });
-    },
-    receiveResponse: (messageId: string, data: any) => {
-      resolveResponseMessage(SCENE_TYPE.WORKER, { messageId, data });
-    },
-  });
+  setWorker(options.worker);
+
+  async function messageHandler(event: MessageEvent<MESSAGE_DATA>) {
+    commonMessageHandler({
+      messageDispatcher,
+      event,
+      postResponse: (messageId: string, data: any) => {
+        postResponseToWorker({
+          messageId,
+          data,
+        });
+      },
+      receiveResponse: (messageId: string, data: any) => {
+        resolveResponseMessage(SCENE_TYPE.WORKER, { messageId, data });
+      },
+    });
+  }
+
+  options.worker.addEventListener("message", messageHandler);
+  const cleanup = () => {
+    options.worker.removeEventListener("message", messageHandler);
+  };
 
   return {
     postToWorker<T>(callName: string, data: T) {
