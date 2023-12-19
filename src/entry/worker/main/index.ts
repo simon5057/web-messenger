@@ -15,7 +15,7 @@ export function registerMain<T extends Object>(
     worker: Worker;
   }
 ) {
-  if (!options.worker) {
+  if (!options?.worker) {
     throw errorMessage("options.worker is required");
   }
   setWorker(options.worker);
