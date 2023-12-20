@@ -3,6 +3,13 @@ import { MESSAGE_DATA, MESSAGE_TYPE, SCENE_TYPE } from "../../../message/types";
 import { useId } from "../../../tools/id";
 import { saveMessageUnresolvedPool } from "../../../message/messagePools";
 
+let _postMessage: typeof postMessage = postMessage;
+export function _setWorkerPostMessageMockForTest(
+  postMessageFn: typeof postMessage
+) {
+  _postMessage = postMessageFn;
+}
+
 function postMessageToMain<T>({
   messageType,
   messageId,
@@ -15,10 +22,10 @@ function postMessageToMain<T>({
   callName?: string;
 }): void {
   if (
-    typeof WorkerGlobalScope === undefined ||
+    typeof WorkerGlobalScope === "undefined" ||
     !(self instanceof WorkerGlobalScope)
   ) {
-    throw errorMessage("not in worker");
+    console.warn(errorMessage("not in worker"));
   }
   const messages: MESSAGE_DATA = {
     messageType,
@@ -26,7 +33,7 @@ function postMessageToMain<T>({
     messageId,
     data,
   };
-  postMessage(messages);
+  _postMessage(messages);
 }
 
 export async function postRequestToMain<T>({
@@ -48,7 +55,7 @@ export async function postRequestToMain<T>({
   });
   if (!awaitResponse) return;
   return new Promise((resolve) => {
-    saveMessageUnresolvedPool(SCENE_TYPE.IFRAME, messageId, resolve);
+    saveMessageUnresolvedPool(SCENE_TYPE.WORKER, messageId, resolve);
   });
 }
 

@@ -3,6 +3,11 @@ import { MESSAGE_DATA, SCENE_TYPE } from "../../../message/types";
 import { postRequestToMain, postResponseToMain } from "./postMessage";
 import { commonMessageHandler } from "../../../message/onMessage";
 
+let _self: WorkerGlobalScope = self as WorkerGlobalScope;
+export function _setWorkerSelfMockForTest(mockSelf: WorkerGlobalScope) {
+  _self = mockSelf;
+}
+
 export function registerWorker<T extends Object>(messageDispatcher: T) {
   async function messageHandler(event: MessageEvent<MESSAGE_DATA>) {
     commonMessageHandler({
@@ -20,9 +25,9 @@ export function registerWorker<T extends Object>(messageDispatcher: T) {
     });
   }
 
-  self.addEventListener("message", messageHandler, false);
+  _self.addEventListener("message", messageHandler, false);
   const cleanup = () => {
-    self.removeEventListener("message", messageHandler, false);
+    _self.removeEventListener("message", messageHandler, false);
   };
 
   return {
