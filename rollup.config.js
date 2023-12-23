@@ -52,4 +52,26 @@ module.exports = [
     "webMessenger-iframeContentWindow",
     true
   ),
+  genUMDOutputConfig(
+    "src/entry/worker/main/index.ts",
+    "WebMessengerWorkerMain",
+    "webMessenger-workerMain"
+  ),
+  genUMDOutputConfig(
+    "src/entry/worker/workerThread/index.ts",
+    "WebMessengerWorkerScope",
+    "webMessenger-workerScope"
+  ),
+  genUMDOutputConfig(
+    "src/entry/worker/main/index.ts",
+    "WebMessengerWorkerMain",
+    "webMessenger-workerMain",
+    true
+  ),
+  genUMDOutputConfig(
+    "src/entry/worker/workerThread/index.ts",
+    "WebMessengerWorkerScope",
+    "webMessenger-workerScope",
+    true
+  ),
 ];
