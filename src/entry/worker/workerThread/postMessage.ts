@@ -4,10 +4,17 @@ import { useId } from "../../../tools/id";
 import { saveMessageUnresolvedPool } from "../../../message/messagePools";
 
 let _postMessage: typeof postMessage = postMessage;
+let _WorkerGlobalScope =
+  typeof WorkerGlobalScope === "undefined" ? undefined : WorkerGlobalScope;
+let _self = self;
+class MockWorkerSelf {}
+
 export function _setWorkerPostMessageMockForTest(
   postMessageFn: typeof postMessage
 ) {
   _postMessage = postMessageFn;
+  _WorkerGlobalScope = MockWorkerSelf as any;
+  _self = new MockWorkerSelf() as any;
 }
 
 function postMessageToMain<T>({
@@ -22,10 +29,10 @@ function postMessageToMain<T>({
   callName?: string;
 }): void {
   if (
-    typeof WorkerGlobalScope === "undefined" ||
-    !(self instanceof WorkerGlobalScope)
+    typeof _WorkerGlobalScope === "undefined" ||
+    !(_self instanceof _WorkerGlobalScope)
   ) {
-    console.warn(errorMessage("not in worker"));
+    throw errorMessage("not in worker");
   }
   const messages: MESSAGE_DATA = {
     messageType,

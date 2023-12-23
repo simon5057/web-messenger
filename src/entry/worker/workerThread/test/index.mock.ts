@@ -2,8 +2,13 @@ import { jest } from "@jest/globals";
 
 const listenerSet: Set<(...args: any) => any> = new Set();
 export function createMock(): {
-  workerSelf: any;
-  postMessage: any;
+  workerSelf: {
+    onmessage: (...args: any[]) => any;
+    addEventListener: (...args: any[]) => any;
+    removeEventListener: (...args: any[]) => any;
+    _mockPostFromMain: (...args: any[]) => any;
+  };
+  postMessage: () => any;
 } {
   return {
     workerSelf: {

@@ -15,7 +15,7 @@ describe("Worker postMessage", () => {
     const { workerSelf, postMessage } = createMock();
     _workerSelf = workerSelf;
     _postMessage = postMessage;
-    _setWorkerSelfMockForTest(workerSelf);
+    _setWorkerSelfMockForTest(workerSelf as any);
     _setWorkerPostMessageMockForTest(postMessage);
     messageBridge = registerWorker({
       ping(data) {
