@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>[Web-messenger] Worker main document</title>
+    <script src="https://cdn.jsdelivr.net/npm/web-messenger/dist/webMessenger-workerMain.umd.js"></script>
+  </head>
+  <body>
+    <button id="button">Post to Worker</button>
+    <hr />
+    <button id="worker-to-main">Worker to Main</button>
+    <hr />
+    <p>Press F12 to open devtools</p>
+
+    <script>
+      function log(...data) {
+        console.log(
+          "%c[main]" + data.join(""),
+          "background: #222; color: #bada55"
+        );
+      }
+    </script>
+    <script>
+      let isReady = false;
+      const webMessenger = WebMessengerWorkerMain.registerMain(
+        {
+          onReady(data) {
+            isReady = true;
+            log(
+              `[messageDispatcher] post from worker, method "onReady": `,
+              data
+            );
+          },
+          mainMethod(params) {
+            log(
+              `[messageDispatcher] post from worker, method "mainMethod": `,
+              params
+            );
+            return "result";
+          },
+        },
+        {
+          worker: new Worker("./worker.js"),
+        }
+      );
+
+      const button = document.querySelector("#button");
+      button.addEventListener("click", () => {
+        if (!isReady) {
+          log("Not ready yet!");
+          return;
+        }
+        webMessenger.postToWorkerAwaitResponse("ping", "ping").then((data) => {
+          log("[response] post to worker, method ping: ", data);
+        });
+      });
+
+      const workerToMainButton = document.querySelector("#worker-to-main");
+      workerToMainButton.addEventListener("click", () => {
+        if (!isReady) {
+          log("Not ready yet!");
+          return;
+        }
+        webMessenger.postToWorker("workerToMain");
+      });
+    </script>
+  </body>
+</html>
