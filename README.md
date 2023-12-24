@@ -172,4 +172,128 @@ export declare function registerIframe<T extends Object>(
 
 ### Used for Worker
 
-- TODO
+#### ESModule
+
+- Main Window
+
+```ts
+// main window
+import { WebMessengerWorkerMain } from "web-messenger";
+
+const messageDispatcher = {
+  onReady(data) {
+    console.log(
+      `[messageDispatcher] post from worker, method "onReady": `,
+      data
+    );
+  },
+  mainMethod(params) {
+    console.log(
+      `[messageDispatcher] post from worker, method "mainMethod": `,
+      params
+    );
+    return "result";
+  },
+};
+
+const worker = new Worker("**/**.js");
+const options: {
+  worker: Worker;
+} = {
+  worker,
+};
+
+const webMessenger = WebMessengerWorkerMain.registerMain(
+  messageDispatcher,
+  options
+);
+```
+
+Post Message to Worker
+
+```ts
+webMessenger.postToWorker(callName, data);
+```
+
+```ts
+webMessenger.postToWorkerAwaitResponse(callName, data);
+```
+
+type registerMain
+
+```ts
+export declare function registerMain<T extends Object>(
+  messageDispatcher: T,
+  options: {
+    worker: Worker;
+  }
+): {
+  postToWorker<T_1>(callName: string, data: T_1): Promise<unknown>;
+  postToWorkerAwaitResponse<T_2>(callName: string, data: T_2): Promise<unknown>;
+  cleanup(): void;
+};
+```
+
+- Worker scope
+
+```ts
+// worker scope
+import { WebMessengerWorkerScope } from "web-messenger";
+
+const messageDispatcher = {
+  ping(data) {
+    console.log("[messageDispatcher] post from main, method ping: ", data);
+    return "pong";
+  },
+};
+
+const webMessenger =
+  WebMessengerWorkerScope.registerWorker(messageDispatcher);
+```
+
+Post Message to Main
+
+```ts
+webMessenger.postToMain(callName, data);
+```
+
+```ts
+webMessenger.postToMainAwaitResponse(callName, data);
+```
+
+type registerWorker
+
+```ts
+export declare function registerWorker<T extends Object>(
+  messageDispatcher: T
+): {
+  postToMain<T_1>(callName: string, data: T_1): Promise<unknown>;
+  postToMainAwaitResponse<T_2>(callName: string, data: T_2): Promise<unknown>;
+  cleanup: () => void;
+};
+```
+
+#### Browser
+
+- Main Window
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/web-messenger/dist/webMessenger-workerMain.umd.min.js"></script>
+<script>
+  const webMessenger = WebMessengerWorkerMain.registerMain(
+    messageDispatcher,
+    options
+  );
+</script>
+```
+
+- Worker Scope
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/web-messenger/dist/webMessenger-workerScope.umd.js"></script>
+<script>
+  const webMessenger = WebMessengerWorkerScope.registerWorker(
+    messageDispatcher
+  );
+</script>
+```
