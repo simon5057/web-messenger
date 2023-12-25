@@ -5,6 +5,7 @@ Let postMessage on Iframe and Worker more convenient.
 ## Examples
 
 - Iframe [iframe example](./examples/iframe/example.html)
+- Worker [Worker example](./examples/worker/example.html)
 
 ## Installation
 
