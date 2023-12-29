@@ -3,7 +3,11 @@ import { MESSAGE_DATA } from "../../../message/types";
 
 export default function iframeOnMessage<T extends Object>(options: {
   messageDispatcher: T;
-  postResponse: (messageId: string, data: any) => void;
+  postResponse: (
+    messageId: string,
+    data: any,
+    transfer?: Transferable[]
+  ) => void;
   receiveResponse: (messageId: string, data: any) => void;
   originWhiteList?: string[];
 }) {

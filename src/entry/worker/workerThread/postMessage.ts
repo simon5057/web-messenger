@@ -21,11 +21,13 @@ function postMessageToMain<T>({
   messageType,
   messageId,
   data,
+  transfer,
   callName,
 }: {
   messageType: MESSAGE_TYPE;
   messageId: string;
   data?: T;
+  transfer?: Transferable[];
   callName?: string;
 }): void {
   if (
@@ -40,16 +42,18 @@ function postMessageToMain<T>({
     messageId,
     data,
   };
-  _postMessage(messages);
+  _postMessage(messages, { transfer });
 }
 
 export async function postRequestToMain<T>({
   callName,
   data,
+  transfer,
   awaitResponse = true,
 }: {
   callName: string;
   data?: T;
+  transfer?: Transferable[];
   awaitResponse?: boolean;
 }) {
   const messageId = useId();
@@ -58,6 +62,7 @@ export async function postRequestToMain<T>({
     messageType: MESSAGE_TYPE.REQUEST,
     messageId,
     data,
+    transfer,
     callName,
   });
   if (!awaitResponse) return;
@@ -69,13 +74,16 @@ export async function postRequestToMain<T>({
 export function postResponseToMain<T>({
   messageId,
   data,
+  transfer,
 }: {
   messageId: string;
   data: T;
+  transfer?: Transferable[];
 }) {
   postMessageToMain({
     messageType: MESSAGE_TYPE.RESPONSE,
     messageId,
     data,
+    transfer,
   });
 }

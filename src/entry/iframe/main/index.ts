@@ -21,10 +21,11 @@ export function registerMain<T extends Object>(
   }
   const cleanup = iframeOnMessage({
     messageDispatcher,
-    postResponse: (messageId: string, data: any) => {
+    postResponse: (messageId: string, data: any, transfer: Transferable[]) => {
       postResponseToIframe({
         messageId,
         data,
+        transfer,
         postToOrigin: options?.postToOrigin,
       });
     },
@@ -50,10 +51,35 @@ export function registerMain<T extends Object>(
         postToOrigin: options?.postToOrigin,
       });
     },
+    postToIframeTransferable<T>(
+      callName: string,
+      data: T,
+      transfer: Transferable[]
+    ) {
+      return postRequestToIframe({
+        callName,
+        data,
+        transfer,
+        postToOrigin: options?.postToOrigin,
+        awaitResponse: false,
+      });
+    },
+    postToIframeTransferableAwaitResponse<T>(
+      callName: string,
+      data: T,
+      transfer: Transferable[]
+    ) {
+      return postRequestToIframe({
+        callName,
+        data,
+        transfer,
+        postToOrigin: options?.postToOrigin,
+      });
+    },
     cleanup() {
       cleanup();
       clearIframe();
-    }
+    },
   };
 }
 

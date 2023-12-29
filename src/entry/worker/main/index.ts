@@ -24,10 +24,15 @@ export function registerMain<T extends Object>(
     commonMessageHandler({
       messageDispatcher,
       event,
-      postResponse: (messageId: string, data: any) => {
+      postResponse: (
+        messageId: string,
+        data: any,
+        transfer: Transferable[]
+      ) => {
         postResponseToWorker({
           messageId,
           data,
+          transfer,
         });
       },
       receiveResponse: (messageId: string, data: any) => {
@@ -53,6 +58,29 @@ export function registerMain<T extends Object>(
       return postRequestToWorker({
         callName,
         data,
+      });
+    },
+    postToWorkerTransferable<T>(
+      callName: string,
+      data: T,
+      transfer: Transferable[]
+    ) {
+      return postRequestToWorker({
+        callName,
+        data,
+        transfer,
+        awaitResponse: false,
+      });
+    },
+    postToWorkerTransferableAwaitResponse<T>(
+      callName: string,
+      data: T,
+      transfer: Transferable[]
+    ) {
+      return postRequestToWorker({
+        callName,
+        data,
+        transfer,
       });
     },
     cleanup() {

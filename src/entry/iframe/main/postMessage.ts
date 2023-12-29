@@ -17,12 +17,14 @@ function postMessageToIframe<T>({
   messageType,
   messageId,
   data,
+  transfer,
   callName,
   postToOrigin,
 }: {
   messageType: MESSAGE_TYPE;
   messageId: string;
   data?: T;
+  transfer?: Transferable[];
   callName?: string;
   postToOrigin?: string;
 }) {
@@ -35,17 +37,19 @@ function postMessageToIframe<T>({
     messageId,
     data,
   };
-  iframe.contentWindow?.postMessage(message, postToOrigin || "*");
+  iframe.contentWindow?.postMessage(message, postToOrigin || "*", transfer);
 }
 
 export async function postRequestToIframe<T>({
   callName,
   data,
+  transfer,
   awaitResponse = true,
   postToOrigin,
 }: {
   callName: string;
   data?: T;
+  transfer?: Transferable[];
   awaitResponse?: boolean;
   postToOrigin?: string;
 }) {
@@ -55,6 +59,7 @@ export async function postRequestToIframe<T>({
     messageType: MESSAGE_TYPE.REQUEST,
     messageId,
     data,
+    transfer,
     callName,
     postToOrigin,
   });
@@ -68,16 +73,19 @@ export async function postRequestToIframe<T>({
 export function postResponseToIframe<T>({
   messageId,
   data,
+  transfer,
   postToOrigin,
 }: {
   messageId: string;
   data: T;
+  transfer?: Transferable[];
   postToOrigin?: string;
 }) {
   postMessageToIframe({
     messageType: MESSAGE_TYPE.RESPONSE,
     messageId,
     data,
+    transfer,
     postToOrigin,
   });
 }

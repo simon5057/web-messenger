@@ -12,10 +12,11 @@ export function registerIframe<T extends Object>(
 ) {
   const cleanup = iframeOnMessage({
     messageDispatcher,
-    postResponse: (messageId: string, data: any) => {
+    postResponse: (messageId: string, data: any, transfer?: Transferable[]) => {
       postResponseToParent({
         messageId,
         data,
+        transfer,
         postToOrigin: options?.postToOrigin,
       });
     },
@@ -38,6 +39,31 @@ export function registerIframe<T extends Object>(
       return postRequestToParent({
         callName,
         data,
+        postToOrigin: options?.postToOrigin,
+      });
+    },
+    postToParentTransferable<T>(
+      callName: string,
+      data: T,
+      transfer: Transferable[]
+    ) {
+      return postRequestToParent({
+        callName,
+        data,
+        transfer,
+        postToOrigin: options?.postToOrigin,
+        awaitResponse: false,
+      });
+    },
+    postToParentTransferableAwaitResponse<T>(
+      callName: string,
+      data: T,
+      transfer: Transferable[]
+    ) {
+      return postRequestToParent({
+        callName,
+        data,
+        transfer,
         postToOrigin: options?.postToOrigin,
       });
     },

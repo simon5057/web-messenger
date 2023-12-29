@@ -17,11 +17,13 @@ function postMessageToWorker<T>({
   messageType,
   messageId,
   data,
+  transfer,
   callName,
 }: {
   messageType: MESSAGE_TYPE;
   messageId: string;
   data?: T;
+  transfer?: Transferable[];
   callName?: string;
 }) {
   if (!_worker) {
@@ -33,16 +35,18 @@ function postMessageToWorker<T>({
     messageId,
     data,
   };
-  _worker.postMessage(message);
+  _worker.postMessage(message, { transfer });
 }
 
 export async function postRequestToWorker<T>({
   callName,
   data,
+  transfer,
   awaitResponse = true,
 }: {
   callName: string;
   data?: T;
+  transfer?: Transferable[];
   awaitResponse?: boolean;
 }) {
   const messageId = useId();
@@ -51,6 +55,7 @@ export async function postRequestToWorker<T>({
     messageType: MESSAGE_TYPE.REQUEST,
     messageId,
     data,
+    transfer,
     callName,
   });
 
@@ -63,13 +68,16 @@ export async function postRequestToWorker<T>({
 export function postResponseToWorker<T>({
   messageId,
   data,
+  transfer,
 }: {
   messageId: string;
   data: T;
+  transfer?: Transferable[];
 }) {
   postMessageToWorker({
     messageType: MESSAGE_TYPE.RESPONSE,
     messageId,
     data,
+    transfer,
   });
 }

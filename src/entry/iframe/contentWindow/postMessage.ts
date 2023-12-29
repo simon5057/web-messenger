@@ -12,12 +12,14 @@ function postMessageToParent<T>({
   messageType,
   messageId,
   data,
+  transfer,
   callName,
   postToOrigin,
 }: {
   messageType: MESSAGE_TYPE;
   messageId: string;
   data?: T;
+  transfer?: Transferable[];
   callName?: string;
   postToOrigin?: string;
 }): void {
@@ -30,17 +32,19 @@ function postMessageToParent<T>({
     messageId,
     data,
   };
-  win.parent.postMessage(messages, postToOrigin || "*");
+  win.parent.postMessage(messages, postToOrigin || "*", transfer);
 }
 
 export async function postRequestToParent<T>({
   callName,
   data,
+  transfer,
   awaitResponse = true,
   postToOrigin,
 }: {
   callName: string;
   data?: T;
+  transfer?: Transferable[];
   awaitResponse?: boolean;
   postToOrigin?: string;
 }) {
@@ -50,6 +54,7 @@ export async function postRequestToParent<T>({
     messageType: MESSAGE_TYPE.REQUEST,
     messageId,
     data,
+    transfer,
     callName,
     postToOrigin,
   });
@@ -62,16 +67,19 @@ export async function postRequestToParent<T>({
 export function postResponseToParent<T>({
   messageId,
   data,
+  transfer,
   postToOrigin,
 }: {
   messageId: string;
   data: T;
+  transfer?: Transferable[];
   postToOrigin?: string;
 }) {
   postMessageToParent({
     messageType: MESSAGE_TYPE.RESPONSE,
     messageId,
     data,
+    transfer,
     postToOrigin,
   });
 }
