@@ -5,6 +5,7 @@
   "main": "./dist/index.js",
   "scripts": {
     "test": "jest",
+    "test-iframe": "jest --verbose ./src/entry/iframe",
     "test-worker": "jest --verbose ./src/entry/worker",
     "test-coverage": "jest --collectCoverage",
     "build": "rollup --config"
