@@ -37,7 +37,11 @@ function postMessageToIframe<T>({
     messageId,
     data,
   };
-  iframe.contentWindow?.postMessage(message, postToOrigin || "*", transfer);
+  if (transfer) {
+    iframe.contentWindow?.postMessage(message, postToOrigin || "*", transfer);
+    return;
+  }
+  iframe.contentWindow?.postMessage(message, postToOrigin || "*");
 }
 
 export async function postRequestToIframe<T>({

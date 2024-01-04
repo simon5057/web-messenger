@@ -42,7 +42,11 @@ function postMessageToMain<T>({
     messageId,
     data,
   };
-  _postMessage(messages, { transfer });
+  if (transfer) {
+    _postMessage(messages, { transfer });
+    return;
+  }
+  _postMessage(messages);
 }
 
 export async function postRequestToMain<T>({

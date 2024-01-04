@@ -32,7 +32,11 @@ function postMessageToParent<T>({
     messageId,
     data,
   };
-  win.parent.postMessage(messages, postToOrigin || "*", transfer);
+  if (transfer) {
+    win.parent.postMessage(messages, postToOrigin || "*", transfer);
+    return;
+  }
+  win.parent.postMessage(messages, postToOrigin || "*");
 }
 
 export async function postRequestToParent<T>({

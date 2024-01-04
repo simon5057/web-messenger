@@ -35,7 +35,11 @@ function postMessageToWorker<T>({
     messageId,
     data,
   };
-  _worker.postMessage(message, { transfer });
+  if (transfer) {
+    _worker.postMessage(message, { transfer });
+    return;
+  }
+  _worker.postMessage(message);
 }
 
 export async function postRequestToWorker<T>({
