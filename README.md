@@ -248,8 +248,7 @@ const messageDispatcher = {
   },
 };
 
-const webMessenger =
-  WebMessengerWorkerScope.registerWorker(messageDispatcher);
+const webMessenger = WebMessengerWorkerScope.registerWorker(messageDispatcher);
 ```
 
 Post Message to Main
@@ -293,8 +292,75 @@ export declare function registerWorker<T extends Object>(
 ```html
 <script src="https://cdn.jsdelivr.net/npm/web-messenger/dist/webMessenger-workerScope.umd.js"></script>
 <script>
-  const webMessenger = WebMessengerWorkerScope.registerWorker(
-    messageDispatcher
-  );
+  const webMessenger =
+    WebMessengerWorkerScope.registerWorker(messageDispatcher);
 </script>
+```
+
+### Data transferable
+
+> As we know, postMessage can transfer Transferable objects between threads.
+> [Transferable objects](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Transferable_objects)
+> To make data transferable, we had provided features for two scenarios.
+
+#### MessageDisPatcher
+
+> After receiving a call from another side, we sometimes want the data in that response to be transferable.
+>
+> 1. Define a function in MessageDispatcher with a name ends with `Transferable`, Such as `MyFeatureTransferable`
+> 2. This function must return a tuple of to elements(`[data, Transferable[]]`), the first one is the data which actually return to the another side, the second is for data transfer(which data can be transferable).
+
+```ts
+const messageDispatcher = {
+  MyFeatureTransferable(params) {
+    const transferableObjects = new ArrayBuffer(10);
+    return [transferableObjects, [transferableObjects]];
+  },
+};
+```
+
+#### Post to another side
+
+> To send transferable data to another side, we provide "postTo\*Transferable" to do so.
+> Such as with Iframe `postToIframeTransferable`, `postToIframeTransferableAwaitResponse`, `postToParentTransferable`, `postToParentTransferableAwaitResponse`
+
+Post Message to Iframe data transfer
+
+```ts
+const webMessenger = WebMessengerIframeMain.registerMain(
+  messageDispatcher,
+  options
+);
+webMessenger.postToIframeTransferable(callName, data);
+webMessenger.postToIframeTransferableAwaitResponse(callName, data);
+```
+
+Post Message to Parent data transfer
+
+```ts
+const webMessenger = WebMessengerIframeContentWindow.registerIframe(
+  messageDispatcher,
+  options
+);
+webMessenger.postToParentTransferable(callName, data);
+webMessenger.postToParentTransferableAwaitResponse(callName, data);
+```
+
+Post Message to Worker data transfer
+
+```ts
+const webMessenger = WebMessengerWorkerMain.registerMain(
+  messageDispatcher,
+  options
+);
+webMessenger.postToWorkerTransferable(callName, data);
+webMessenger.postToWorkerTransferableAwaitResponse(callName, data);
+```
+
+Post Message to Main data transfer
+
+```ts
+const webMessenger = WebMessengerWorkerScope.registerWorker(messageDispatcher);
+webMessenger.postToMainTransferable(callName, data);
+webMessenger.postToMainTransferableAwaitResponse(callName, data);
 ```
