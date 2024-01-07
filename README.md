@@ -7,6 +7,9 @@ Let postMessage on Iframe and Worker more convenient.
 - Iframe [iframe example](./examples/iframe/example.html)
 - Worker [Worker example](./examples/worker/example.html)
 
+- Iframe data transferable [iframe data transferable example](./examples/iframe-transfer/example.html)
+- Worker data transferable [Worker data transferable example](./examples/worker-transfer/example.html)
+
 ## Installation
 
 ```
