@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>[Web-messenger](transfer) Worker main document</title>
+    <script src="https://cdn.jsdelivr.net/npm/web-messenger/dist/webMessenger-workerMain.umd.js"></script>
+  </head>
+  <body>
+    <button id="button">Post to Worker</button>
+    <hr />
+    <button id="worker-to-main">Worker to Main</button>
+    <hr />
+    <p>Press F12 to open devtools</p>
+
+    <script>
+      function log(...data) {
+        console.log(
+          "%c[main]" + data.join(""),
+          "background: #222; color: #bada55"
+        );
+      }
+    </script>
+    <script>
+      let isReady = false;
+      const webMessenger = WebMessengerWorkerMain.registerMain(
+        {
+          onReady(data) {
+            isReady = true;
+            log(
+              `[messageDispatcher] post from worker, method "onReady": `,
+              data
+            );
+          },
+          mainMethodTransferable(params) {
+            log(
+              `[messageDispatcher] post from worker, method "mainMethodTransferable": `,
+              params
+            );
+            const arr = new Uint8Array([1, 2, 3, 4, 5, 6, 7, 8]);
+            const buffer = arr.buffer;
+            setTimeout(() => {
+              console.log(arr);
+            }, 1000);
+            return [arr, [buffer]];
+          },
+        },
+        {
+          worker: new Worker("./worker.js"),
+        }
+      );
+
+      const button = document.querySelector("#button");
+      button.addEventListener("click", () => {
+        if (!isReady) {
+          log("Not ready yet!");
+          return;
+        }
+        const arr = new Uint8Array([11, 12, 13, 14, 15, 16, 17, 18]);
+        const buffer = arr.buffer;
+        setTimeout(() => {
+          console.log(arr);
+        }, 1000);
+        webMessenger
+          .postToWorkerTransferableAwaitResponse("pingTransferable", arr, [
+            buffer,
+          ])
+          .then((data) => {
+            log("[response] post to worker, method pingTransferable: ", data);
+          });
+      });
+
+      const workerToMainButton = document.querySelector("#worker-to-main");
+      workerToMainButton.addEventListener("click", () => {
+        if (!isReady) {
+          log("Not ready yet!");
+          return;
+        }
+        webMessenger.postToWorker("workerToMain");
+      });
+    </script>
+  </body>
+</html>
